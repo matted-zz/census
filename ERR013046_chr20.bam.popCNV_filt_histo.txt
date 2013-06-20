@@ -1,0 +1,5 @@
+#	322189 considered read pairs	307194 valid read pairs	14901 optical dup read pairs	4.62	pct. optical dups	94 bad chr read pairs	0.03	pct. bad chrs	0 CNV read pairs	0.00	pct. CNVs
+1	271646
+2	16447
+3	82
+4	6
