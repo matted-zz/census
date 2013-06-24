@@ -9,8 +9,14 @@ guides to interpret the results of Census.
 Installation:
 ==
 
-Several Python packages are required.  On a Ubuntu-like system, these
-commands will get the appropriate dependencies:
+You can get Census by pulling it from git:
+
+    git clone https://github.com/matted/census.git
+
+... or by downloading a zip: https://github.com/matted/census/archive/master.zip.
+
+To run Census, several Python packages are required.  On a Ubuntu-like
+system, these commands will get the appropriate dependencies:
 
     sudo apt-get install python python-setuptools python-numpy python-scipy python-pylab
     sudo easy_install pysam
