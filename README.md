@@ -21,13 +21,19 @@ Quick usage:
 Census operates in two phases, a read duplicate count generation step
 and an estimation step.
 
-    ./bam_to_histo.py input.bam | ./calculate_libsize.py -
+    ./bam_to_histo.py dummy.bed input.bam | ./calculate_libsize.py -
 
 The default is to use paired-end information to improve the accuracy
 of duplicate detection.  Since this won't work for single-end reads,
 those experiments must be analyzed with the "-s" option passed to
 bam_to_histo.py.
 
+The reads in the input bam must be coordinate-sorted.  The input bed
+serves a dual purpose: it gives regions that should be filtered out in
+duplicate detection, and only the chromosomes appearing in the bed
+file will be used to create duplicates.  This allows for quick
+filtering of mitochondrial reads and other sources that do not carry
+the same assumptions as the rest of the genome.
 
 Extended usage and options:
 ==
