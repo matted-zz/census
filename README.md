@@ -13,7 +13,7 @@ You can get Census by pulling it from git:
 
     git clone https://github.com/matted/census.git
 
-... or by downloading a zip: https://github.com/matted/census/archive/master.zip.
+... or by downloading a zip: https://github.com/matted/census/archive/v0.8.zip.
 
 To run Census, several Python packages are required.  On a Ubuntu-like
 system, these commands will get the appropriate dependencies:
