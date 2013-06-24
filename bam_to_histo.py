@@ -79,11 +79,8 @@ records = 0.01
 valid = 0
 
 DEBUG = True
-
 MIN_DIST = args.mindist
-
 PAIRED = not args.unpaired
-
 MIN_MAPQ = args.mapq
 
 maxX = -1

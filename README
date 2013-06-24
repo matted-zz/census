@@ -1,0 +1,12 @@
+
+
+Dependencies:
+
+pysam (sudo easy_install pysam)
+numpy (sudo apt-get install python-numpy)
+
+caveats:
+  a chromosome must be referenced in the BED to be included (shortcut for excluding mitochondrial and small alternate chromosomes)
+  read pairs with the same coordinates are ignored, as are secondary alignments
+  
+See BED file from http://eqtl.uchicago.edu/Masking/ (give citation too!)
