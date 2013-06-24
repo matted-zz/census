@@ -7,19 +7,21 @@ https://github.com/matted/census/wiki for more details, including
 guides to interpret the results of Census.
 
 Installation:
+==
 
 Several Python packages are required.  On a Ubuntu-like system, these
 commands will get the appropriate dependencies:
 
-sudo apt-get install python python-setuptools python-numpy python-scipy python-pylab
-sudo easy_install pysam
+    sudo apt-get install python python-setuptools python-numpy python-scipy python-pylab
+    sudo easy_install pysam
 
 Quick usage:
+==
 
 Census operates in two phases, a read duplicate count generation step
 and an estimation step.
 
-./bam_to_histo.py input.bam | ./calculate_libsize.py -
+    ./bam_to_histo.py input.bam | ./calculate_libsize.py -
 
 The default is to use paired-end information to improve the accuracy
 of duplicate detection.  Since this won't work for single-end reads,
@@ -28,58 +30,55 @@ bam_to_histo.py.
 
 
 Extended usage and options:
+==
 
 Histogram generator usage: 
 
-usage: bam_to_histo.py [-h] [-v] [-s] [-q MAPQ] [-d MINDIST] [-r REGEXP]
-                       excluded_regions.bed sorted_reads.bam
-bam_to_histo.py: error: too few arguments
-matted@pax6:~/work/lib_complexity/census$ ./bam_to_histo.py -h
-usage: bam_to_histo.py [-h] [-v] [-s] [-q MAPQ] [-d MINDIST] [-r REGEXP]
+    usage: bam_to_histo.py [-h] [-v] [-s] [-q MAPQ] [-d MINDIST] [-r REGEXP]
                        excluded_regions.bed sorted_reads.bam
 
-Histogram generator for Census library complexity package.
+    Histogram generator for Census library complexity package.
 
-positional arguments:
-  excluded_regions.bed
-  sorted_reads.bam
+    positional arguments:
+      excluded_regions.bed
+      sorted_reads.bam
 
-optional arguments:
-  -h, --help            show this help message and exit
-  -v, --version         show program's version number and exit
-  -s, --single_ended    Include only single-ended reads, instead of only
-                        paired-end reads where both ends map.
-  -q MAPQ, --mapq MAPQ  Minimum read mapping quality for a read or read pair
-                        to be included. Default is 1.
-  -d MINDIST, --mindist MINDIST
-                        Maximum distance in reported flowcell coordinates for
-                        reads to be considered optical duplicates. Default is
-                        100.
-  -r REGEXP, --regexp REGEXP
-                        Regular expression for finding flowcell coordinates
-                        from read names. Default is [\w\.
-                        ]+:([\d]):([\d]+):([\d]+):([\d]+).*
+    optional arguments:
+      -h, --help            show this help message and exit
+      -v, --version         show program's version number and exit
+      -s, --single_ended    Include only single-ended reads, instead of only
+                            paired-end reads where both ends map.
+      -q MAPQ, --mapq MAPQ  Minimum read mapping quality for a read or read pair
+                            to be included. Default is 1.
+      -d MINDIST, --mindist MINDIST
+                            Maximum distance in reported flowcell coordinates for
+                            reads to be considered optical duplicates. Default is
+                            100.
+      -r REGEXP, --regexp REGEXP
+                            Regular expression for finding flowcell coordinates
+                            from read names. Default is [\w\.
+                            ]+:([\d]):([\d]+):([\d]+):([\d]+).*
 
 Library complexity estimation usage:
 
-usage: calculate_libsize.py [-h] [-v] [-l MINCOUNT] [-r MAXCOUNT]
+    usage: calculate_libsize.py [-h] [-v] [-l MINCOUNT] [-r MAXCOUNT]
                             [-s SUBSAMPLE]
                             count_histogram.txt
 
-Census, library complexity estimation.
+    Census, library complexity estimation.
 
-positional arguments:
-  count_histogram.txt   File for duplicate count histogram, or - for stdin.
+    positional arguments:
+      count_histogram.txt   File for duplicate count histogram, or - for stdin.
 
-optional arguments:
-  -h, --help            show this help message and exit
-  -v, --version         show program's version number and exit
-  -l MINCOUNT, --mincount MINCOUNT
-                        Minimum duplicate count to use in estimation. Default
-                        is 1.
-  -r MAXCOUNT, --maxcount MAXCOUNT
-                        Maximum duplicate count to use in estimation. Default
-                        is 10.
-  -s SUBSAMPLE, --subsample SUBSAMPLE
-                        Fraction of counts to use (float), useful for testing.
-                        Default is 1 (no downsampling).
+    optional arguments:
+      -h, --help            show this help message and exit
+      -v, --version         show program's version number and exit
+      -l MINCOUNT, --mincount MINCOUNT
+                            Minimum duplicate count to use in estimation. Default
+                            is 1.
+      -r MAXCOUNT, --maxcount MAXCOUNT
+                            Maximum duplicate count to use in estimation. Default
+                            is 10.
+      -s SUBSAMPLE, --subsample SUBSAMPLE
+                            Fraction of counts to use (float), useful for testing.
+                            Default is 1 (no downsampling).
