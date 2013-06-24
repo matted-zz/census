@@ -35,6 +35,10 @@ file will be used to create duplicates.  This allows for quick
 filtering of mitochondrial reads and other sources that do not carry
 the same assumptions as the rest of the genome.
 
+Filtering regions for hg19 described by the Pritchard lab (Pickrell et
+al., Bioinformatics 2011) are included in the repository (downloaded
+from http://eqtl.uchicago.edu/Masking/).
+
 Extended usage and options:
 ==
 
