@@ -13,7 +13,7 @@
 import sys, numpy, random, math, scipy.optimize, scipy.stats, argparse
 from collections import defaultdict
 
-VERSION = "0.8"
+VERSION = "0.9"
 
 def log_trunc(x):
     return numpy.log(max(x, 1e-300))

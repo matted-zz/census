@@ -13,7 +13,7 @@
 import pysam, sys, numpy, bisect, re, argparse
 from collections import defaultdict
 
-VERSION = "0.8"
+VERSION = "0.9"
 
 def covered(regions, pos):
     targ = bisect.bisect_left(regions, (pos,0))
