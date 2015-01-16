@@ -67,7 +67,7 @@ parser.add_argument("-v", "--version", action="version", version=VERSION)
 parser.add_argument("-s", "--single_ended", action="store_true", dest="unpaired", help="Include only single-ended reads, instead of only paired-end reads where both ends map.")
 parser.add_argument("-q", "--mapq", type=int, default=1, help="Minimum read mapping quality for a read or read pair to be included.  Default is 1.")
 parser.add_argument("-d", "--mindist", type=int, default=100, help="Maximum distance in reported flowcell coordinates for reads to be considered optical duplicates.  Default is 100.")
-parser.add_argument("-r", "--regexp", default="[\w\. ]+:([\d]):([\d]+):([\d]+):([\d]+).*", help="Regular expression for finding flowcell coordinates from read names.  Default is [\w\. ]+:([\d]):([\d]+):([\d]+):([\d]+).*")
+parser.add_argument("-r", "--regexp", default="[\w\.\-\_ ]+:([\d]):([\d]+):([\d]+):([\d]+).*", help="Regular expression for finding flowcell coordinates from read names.  Default is [\w\.\-\_ ]+:([\d]):([\d]+):([\d]+):([\d]+).*")
 
 args = parser.parse_args()
 
