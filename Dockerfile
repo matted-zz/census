@@ -9,7 +9,6 @@ MAINTAINER Matt Edwards <matted@mit.edu>
 RUN mkdir /root/census
 WORKDIR /root/census
 RUN git clone https://github.com/matted/census.git .
-ADD setup.py /root/census/
 
 # Install for both Python 2 and 3 (it makes testing easier).
 RUN python2 setup.py install --quiet
