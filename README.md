@@ -4,7 +4,7 @@ Census 0.9
 Census is a tool to estimate the complexity of sequencing libraries
 from read count samples.  See the wiki at
 https://github.com/matted/census/wiki for more details, including
-guides to interpret the results of Census.
+guides to interpreting the results of Census.
 
 Installation:
 ==
@@ -22,8 +22,8 @@ system, these commands will get the appropriate dependencies:
     sudo easy_install pysam
 
 If you don't have root permissions on your system, but you already
-have Python, gcc, Scipy, and Numpy, you can get Census working by
-cloning it, moving into the new directory, and running:
+have Python, setuptools, gcc, Scipy, and Numpy, you can get Census
+working by cloning it, moving into the new directory, and running:
 
     python setup.py install --user
 
@@ -32,7 +32,7 @@ The Scipy and Numpy dependencies are best installed at the system
 level since they require several non-Python components.
 
 If you want the Census tools on your system path (and want to get the
-pysam dependency automatically), install it with:
+pysam dependency automatically), install Census with:
 
     sudo python setup.py install
 
@@ -61,7 +61,9 @@ the same assumptions as the rest of the genome.
 
 Filtering regions for hg19 described by the Pritchard lab (Pickrell et
 al., Bioinformatics 2011) are included in the repository (downloaded
-from http://eqtl.uchicago.edu/Masking/).
+from http://eqtl.uchicago.edu/Masking/).  For more species, see the
+ENCODE filtering lists at
+https://sites.google.com/site/anshulkundaje/projects/blacklists.
 
 Extended usage and options:
 ==
