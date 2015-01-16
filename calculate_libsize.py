@@ -124,9 +124,9 @@ def estimate(counts, left, right, out=True, verbose=False):
     print "\tUniq. Frac.\tReads (Poi.)\tReads (NB)\tReads (LSD)"
 
     for target_unique_frac in [0.5, 0.8, 0.95]:
-        max_reads_poisson = scipy.optimize.brent(lambda reads : (libsize * (1.0 - scipy.stats.poisson.pmf(0, max(1, reads) / libsize)) / max(1, reads) - target_unique_frac)**2.0, brack=(1e5, 1e9))
-        max_reads_NB = scipy.optimize.brent(lambda reads : (libsize2 * (1.0 - scipy.stats.nbinom.pmf(0, ret2[0], 1.0 - beta*max(1, reads)/xsum/(1.0+beta*max(1, reads)/xsum))) / max(1, reads) - target_unique_frac)**2.0, brack=(1e5, 1e9))
-        max_reads_LSD = scipy.optimize.brent(lambda reads : (fish_alpha * numpy.log(1.0 + max(1, reads) / fish_alpha) / max(1, reads) - target_unique_frac)**2.0, brack=(1e5, 1e9))
+        max_reads_poisson = scipy.optimize.brent(lambda reads : (libsize * (1.0 - scipy.stats.poisson.pmf(0, max(1, reads) / libsize)) / max(1, reads) - target_unique_frac)**2.0, brack=(10, 1e9))
+        max_reads_NB = scipy.optimize.brent(lambda reads : (libsize2 * (1.0 - scipy.stats.nbinom.pmf(0, ret2[0], 1.0 - beta*max(1, reads)/xsum/(1.0+beta*max(1, reads)/xsum))) / max(1, reads) - target_unique_frac)**2.0, brack=(1e6, 1e11))
+        max_reads_LSD = scipy.optimize.brent(lambda reads : (fish_alpha * numpy.log(1.0 + max(1, reads) / fish_alpha) / max(1, reads) - target_unique_frac)**2.0, brack=(1e6, 1e11))
         
         print "\t%.2f:\t\t%.1f\t%.1f\t%.1f" % (target_unique_frac, max_reads_poisson, max_reads_NB, max_reads_LSD)
 
@@ -166,7 +166,7 @@ def estimate(counts, left, right, out=True, verbose=False):
         # LSD estimate
         temp3 = fish_alpha * numpy.log(1.0 + more_reads / fish_alpha)
 
-        print "\t%dM:\t%.1f\t%.1f\t%.1f" % (more_reads/1000000, temp1, temp2, temp3)
+        print "\t%.1fM:\t%.1f\t%.1f\t%.1f" % (1.0*more_reads/1000000, temp1, temp2, temp3)
     ###
 
     return libsize, xcount
@@ -219,6 +219,11 @@ def sample_histo_fast(histo, frac=0.5):
         histo[count] += 1
     return map_to_histo_vec(histo)
 
+def write_histo(fout, histo):
+    for index, counts in enumerate(histo):
+        print >>fout, "%d\t%d" % (index, counts)
+    fout.flush()
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Census, library complexity estimation.")
     parser.add_argument("count_histogram.txt", type=argparse.FileType('r'), help="File for duplicate count histogram, or - for stdin.")
@@ -226,6 +231,7 @@ if __name__ == "__main__":
     parser.add_argument("-l", "--mincount", type=int, default=1, help="Minimum duplicate count to use in estimation.  Default is 1.")
     parser.add_argument("-r", "--maxcount", type=int, default=10, help="Maximum duplicate count to use in estimation.  Default is 10.")
     parser.add_argument("-s", "--subsample", type=float, default=1, help="Fraction of counts to use (float), useful for testing.  Default is 1 (no downsampling).")
+    parser.add_argument("-o", "--histo", type=argparse.FileType('w'), default=None, help="File to write subsampled histogram to (no file output by default).")
     
     args = parser.parse_args()
 
@@ -234,11 +240,15 @@ if __name__ == "__main__":
     left = args.mincount
     right = args.maxcount
 
+    # counts = {0:0}
+
     for line in f:
         if line[0] == "#": continue
         index, count = map(int, line.strip().split()[:2])
         temp[index] = count
         counts = map_to_histo_vec(temp)
+
+    # need to check for no counts!
 
     if counts[0] != 0:
         print "true 0 counts, which we are ignoring in the estimation procedure:", counts[0]
@@ -246,6 +256,9 @@ if __name__ == "__main__":
 
     if args.subsample < 1.0 and args.subsample > 0.0:
         subsample = sample_histo_fast(counts, args.subsample)
+        if args.histo is not None:
+            write_histo(args.histo, subsample)
+
         print >>sys.stderr, "randomly downsampling to %.4f of reads" % args.subsample
     else:
         subsample = counts
