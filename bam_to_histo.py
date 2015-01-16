@@ -40,8 +40,8 @@ def parse_bed(fin_bed):
     for chromo, regions in bed.iteritems():
         bed[chromo] = sorted(regions)
 
-    print >>sys.stderr, "total bases excluded:", total
-    print >>sys.stderr, "total chromosomes included:", len(bed)
+    sys.stderr.write("total bases excluded: %d\n" % total)
+    sys.stderr.write("total chromosomes included: %d\n" % len(bed))
     
     fin_bed.close()
     return bed
@@ -103,7 +103,7 @@ for read in samf:
         continue
 
     if records > 0 and records % 1000000 == 0:
-        if DEBUG: print >>sys.stderr, "processed %d reads, max x: %d, max y: %d" % (records, maxX, maxY)
+        if DEBUG: sys.stderr.write("processed %d reads, max x: %d, max y: %d\n" % (records, maxX, maxY))
 
     records += 1
 
@@ -138,8 +138,7 @@ for read in samf:
             if len(names) > 1 and BAD_COORDS not in names: # if we couldn't parse flowcell coordinates, don't try any optical duplicate detection
                 legit = set(names)
                 if len(legit) > 500:
-                    if DEBUG: print >>sys.stderr, "skipping a cluster because it has too many hits"
-                    if DEBUG: print >>sys.stderr, key, names
+                    if DEBUG: sys.stderr.write("skipping a cluster (%s) because it has too many hits\n" % key)
                     continue
                 for index1, name1 in enumerate(names):
                     for index2 in xrange(index1+1, len(names)):
@@ -147,7 +146,7 @@ for read in samf:
                         if dist < MIN_DIST:
                             legit.discard(names[index2])
                 if False and len(legit) >= 4:
-                    print key, len(legit), sorted(legit)
+                    print("%s %d %s" % (key, len(legit), str(sorted(legit))))
                 histo[len(legit)] += 1
                 dupsKilled += len(names) - len(legit)
             else:
@@ -172,8 +171,7 @@ for key, names in hits.iteritems():
     if len(names) > 1 and BAD_COORDS not in names:
         legit = set(names)
         if len(legit) > 500:
-            if DEBUG: print >>sys.stderr, "skipping a cluster because it has too many hits"
-            if DEBUG: print >>sys.stderr, key, names
+            if DEBUG: sys.stderr.write("skipping a cluster (%s) because it has too many hits\n" % key)
             continue
         for index1, name1 in enumerate(names):
             for index2 in xrange(index1+1, len(names)):
@@ -181,7 +179,7 @@ for key, names in hits.iteritems():
                 if dist < MIN_DIST:
                     legit.discard(names[index2])
         if False and len(legit) >= 4:
-            print key, len(legit), sorted(legit)
+            print("%s %d %s" % (key, len(legit), str(sorted(legit))))
         histo[len(legit)] += 1
         dupsKilled += len(names) - len(legit)
     else:
@@ -190,9 +188,9 @@ for key, names in hits.iteritems():
 samf.close()
 
 if parseFailure:
-    print >>sys.stderr, "WARNING: read name regular expression couldn't parse the flowcell position, so no optical duplicate detection was performed"
+    sys.stderr.write("WARNING: read name regular expression couldn't parse the flowcell position, so no optical duplicate detection was performed\n")
 
-print "# %d considered read pairs, %d valid read pairs, %d optical dup read pairs (%.2f pct.), %d bad chr read pairs (%.2f pct.), %d CNV read pairs (%.2f pct.), %d bad mapq pairs (%.2f pct.)" % (records, valid, dupsKilled, 100.0*dupsKilled/records, badChrKilled, 100.0*badChrKilled/records, cnvsKilled, 100.0*cnvsKilled/records, badMapqKilled, 100.0*badMapqKilled/records)
+print("# %d considered read pairs, %d valid read pairs, %d optical dup read pairs (%.2f pct.), %d bad chr read pairs (%.2f pct.), %d CNV read pairs (%.2f pct.), %d bad mapq pairs (%.2f pct.)" % (records, valid, dupsKilled, 100.0*dupsKilled/records, badChrKilled, 100.0*badChrKilled/records, cnvsKilled, 100.0*cnvsKilled/records, badMapqKilled, 100.0*badMapqKilled/records))
 
 for hit, count in sorted(histo.iteritems()):
-    print "%d\t%d" % (hit, count)
+    print("%d\t%d" % (hit, count))
