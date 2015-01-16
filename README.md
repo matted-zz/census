@@ -1,4 +1,4 @@
-Census 0.8
+Census 0.9
 ==============
 
 Census is a tool to estimate the complexity of sequencing libraries
@@ -13,13 +13,31 @@ You can get Census by pulling it from git:
 
     git clone https://github.com/matted/census.git
 
-... or by downloading a zip: https://github.com/matted/census/archive/v0.8.zip.
+... or by downloading a zip: https://github.com/matted/census/archive/v0.9.zip.
 
 To run Census, several Python packages are required.  On a Ubuntu-like
 system, these commands will get the appropriate dependencies:
 
-    sudo apt-get install python python-setuptools python-numpy python-scipy python-pylab
+    sudo apt-get install python python-dev build-essential python-setuptools python-numpy python-scipy python-pylab
     sudo easy_install pysam
+
+If you don't have root permissions on your system, but you already
+have Python, gcc, Scipy, and Numpy, you can get Census working by
+cloning it, moving into the new directory, and running:
+
+    python setup.py install --user
+
+This will install the pysam dependency in your local user directory.
+The Scipy and Numpy dependencies are best installed at the system
+level since they require several non-Python components.
+
+If you want the Census tools on your system path (and want to get the
+pysam dependency automatically), install it with:
+
+    sudo python setup.py install
+
+There is also a Docker image that has Census and its dependencies
+preinstalled.  See https://github.com/matted/census/wiki/Docker.
 
 Quick usage:
 ==
