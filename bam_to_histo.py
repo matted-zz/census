@@ -5,7 +5,7 @@
 # See usage instructions in the README or http://github.com/matted/census/.
 #
 # Matt Edwards
-# Copyright 2013 MIT
+# Copyright 2014 MIT
 # Released under the MIT license
 #
 #

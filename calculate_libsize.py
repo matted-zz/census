@@ -5,7 +5,7 @@
 # See usage instructions in the README or http://github.com/matted/census/.
 #
 # Matt Edwards
-# Copyright 2013 MIT
+# Copyright 2014 MIT
 # Released under the MIT license
 #
 #
@@ -65,7 +65,7 @@ def estimate(counts, left, right, out=True, verbose=False):
         print("\tLargest included event count (inclusive):\t%d" % right)
         print("\tTotal reads:\t%d" % xsum)
         print("\tTotal unique reads (molecules):\t%d (%.1f%%)" % (xcount, 100.0*xcount/xsum))
-        print("\tAverage reads per molecule:\t%d" % xavg)
+        print("\tAverage reads per molecule:\t%.4f" % xavg)
 
     # Fit Poisson model.
     ret = scipy.optimize.fminbound(loglik, 0.001, 200.0, args=(xavg, left, right), maxfun=1000, disp=0)
@@ -147,7 +147,7 @@ def estimate(counts, left, right, out=True, verbose=False):
     ### 
     print("Prediction of observed unique molecules with given read counts:")
     print("\tReads\tUnique (Poi.)\tUnique (NB)\tUnique (LSD)")
-    for more_reads in [xsum] + range(int(50e6), int(500e6+1), int(100e6)) + [1e9] + [2e9]:
+    for more_reads in [xsum] + list(range(int(50e6), int(500e6+1), int(100e6))) + [1e9] + [2e9]:
         L = 1.0*(more_reads)/libsize
         new_beta = beta * L / (xsum / libsize) # scale beta to stay proportional to lambda
 
@@ -164,8 +164,8 @@ def estimate(counts, left, right, out=True, verbose=False):
     return libsize, xcount
 
 def map_to_histo_vec(temp):
-    counts = numpy.zeros((max([-1]+temp.keys())+1))
-    for k,v in temp.iteritems():
+    counts = numpy.zeros((max([-1]+list(temp.keys()))+1))
+    for k,v in temp.items():
         counts[k] = v
     return counts
 
@@ -196,17 +196,17 @@ def estimate_EM(counts, left, right):
 def sample_histo_fast(histo, frac=0.5):
     choices = []
     for index, count in enumerate(histo):
-        choices.extend(range(len(choices),len(choices)+int(count))*index)
+        choices.extend(list(range(len(choices),len(choices)+int(count))) * index)
     numpy.random.shuffle(choices)
     sampled = choices[:scipy.stats.binom.rvs(len(choices), frac)]
     hits = {}
     for sample in sampled:
-        if not hits.has_key(sample):
+        if not sample in hits:
             hits[sample] = 0
         hits[sample] += 1
     histo = {}
-    for hit, count in hits.iteritems():
-        if not histo.has_key(count):
+    for hit, count in hits.items():
+        if not count in histo:
             histo[count] = 0
         histo[count] += 1
     return map_to_histo_vec(histo)
