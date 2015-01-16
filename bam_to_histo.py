@@ -31,13 +31,13 @@ def parse_bed(fin_bed):
     for line in fin_bed:
         line = line.strip().split()
         chromo = line[0]
-        if not bed.has_key(chromo):
+        if not chromo in bed:
             bed[chromo] = [(0,0)]
         bed[chromo].append((int(line[1]) - D, int(line[2]) + D))
         total += bed[chromo][-1][1] - bed[chromo][-1][0]
         sizes.append(bed[chromo][-1][1] - bed[chromo][-1][0])
 
-    for chromo, regions in bed.iteritems():
+    for chromo, regions in bed.items():
         bed[chromo] = sorted(regions)
 
     sys.stderr.write("total bases excluded: %d\n" % total)
@@ -125,7 +125,7 @@ for read in samf:
     refname = samf.getrname(read.rname)
     mateRefname = samf.getrname(read.mrnm) 
 
-    if len(bed) > 0 and (not bed.has_key(refname) or not bed.has_key(mateRefname)):
+    if len(bed) > 0 and (not refname in bed or not mateRefname in bed):
         badChrKilled += 1
         continue
 
@@ -134,14 +134,14 @@ for read in samf:
         continue
 
     if (samf.getrname(read.rname), read.pos) != current:
-        for key, names in hits.iteritems():
+        for key, names in hits.items():
             if len(names) > 1 and BAD_COORDS not in names: # if we couldn't parse flowcell coordinates, don't try any optical duplicate detection
                 legit = set(names)
                 if len(legit) > 500:
                     if DEBUG: sys.stderr.write("skipping a cluster (%s) because it has too many hits\n" % key)
                     continue
                 for index1, name1 in enumerate(names):
-                    for index2 in xrange(index1+1, len(names)):
+                    for index2 in range(index1+1, len(names)):
                         dist = flowcell_dist(name1, names[index2])
                         if dist < MIN_DIST:
                             legit.discard(names[index2])
@@ -157,7 +157,7 @@ for read in samf:
 
     key = (samf.getrname(read.rname), read.pos, samf.getrname(read.mrnm) if read.mrnm != -1 else "", read.mpos, read.isize)
 
-    if not hits.has_key(key):
+    if not key in hits:
         hits[key] = []
     coords = parse(read.qname, args.regexp)
     if coords == BAD_COORDS:
@@ -167,14 +167,14 @@ for read in samf:
     if coords[-1] > maxY: maxY = coords[-1]
     
 # process hits for the last set (duplicate code...)
-for key, names in hits.iteritems():
+for key, names in hits.items():
     if len(names) > 1 and BAD_COORDS not in names:
         legit = set(names)
         if len(legit) > 500:
             if DEBUG: sys.stderr.write("skipping a cluster (%s) because it has too many hits\n" % key)
             continue
         for index1, name1 in enumerate(names):
-            for index2 in xrange(index1+1, len(names)):
+            for index2 in range(index1+1, len(names)):
                 dist = flowcell_dist(name1, names[index2])
                 if dist < MIN_DIST:
                     legit.discard(names[index2])
@@ -192,5 +192,5 @@ if parseFailure:
 
 print("# %d considered read pairs, %d valid read pairs, %d optical dup read pairs (%.2f pct.), %d bad chr read pairs (%.2f pct.), %d CNV read pairs (%.2f pct.), %d bad mapq pairs (%.2f pct.)" % (records, valid, dupsKilled, 100.0*dupsKilled/records, badChrKilled, 100.0*badChrKilled/records, cnvsKilled, 100.0*cnvsKilled/records, badMapqKilled, 100.0*badMapqKilled/records))
 
-for hit, count in sorted(histo.iteritems()):
+for hit, count in sorted(histo.items()):
     print("%d\t%d" % (hit, count))
