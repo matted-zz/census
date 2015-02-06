@@ -2,7 +2,7 @@
 from setuptools import setup
 
 setup(name="census",
-      version="0.9",
+      version="0.9.1",
       description="Sequencing library complexity estimation.",
       author="Matt Edwards",
       author_email="matted@mit.edu",
