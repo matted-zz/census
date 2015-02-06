@@ -232,15 +232,23 @@ if __name__ == "__main__":
     left = args.mincount
     right = args.maxcount
 
-    # counts = {0:0}
+    counts = None
 
     for line in f:
         if line[0] == "#": continue
-        index, count = map(int, line.strip().split()[:2])
+        tokens = line.strip().split()
+        if len(tokens) < 2:
+            continue
+        try:
+            index, count = map(int, tokens[:2])
+        except ValueError:
+            continue
         temp[index] = count
         counts = map_to_histo_vec(temp)
 
-    # need to check for no counts!
+    if counts is None or len(counts) <= 1 or max(counts) <= 0 or min(counts) < 0:
+        sys.stderr.write("Count histogram is empty, only zero(s), or otherwise malformed; exiting.\n")
+        sys.exit(1)
 
     if counts[0] != 0:
         print("true 0 counts, which we are ignoring in the estimation procedure: %d" % counts[0])
