@@ -13,7 +13,7 @@
 import pysam, sys, numpy, bisect, re, argparse
 from collections import defaultdict
 
-VERSION = "0.9"
+VERSION = "0.9.1"
 
 def covered(regions, pos):
     targ = bisect.bisect_left(regions, (pos,0))
@@ -78,7 +78,7 @@ hits = {}
 records = 0.01
 valid = 0
 
-DEBUG = True
+DEBUG = False
 MIN_DIST = args.mindist
 PAIRED = not args.unpaired
 MIN_MAPQ = args.mapq
@@ -138,7 +138,7 @@ for read in samf:
             if len(names) > 1 and BAD_COORDS not in names: # if we couldn't parse flowcell coordinates, don't try any optical duplicate detection
                 legit = set(names)
                 if len(legit) > 500:
-                    if DEBUG: sys.stderr.write("skipping a cluster (%s) because it has too many hits\n" % key)
+                    if DEBUG: sys.stderr.write("skipping a cluster (%s) because it has too many hits\n" % str(key))
                     continue
                 for index1, name1 in enumerate(names):
                     for index2 in range(index1+1, len(names)):
@@ -146,7 +146,7 @@ for read in samf:
                         if dist < MIN_DIST:
                             legit.discard(names[index2])
                 if False and len(legit) >= 4:
-                    print("%s %d %s" % (key, len(legit), str(sorted(legit))))
+                    print("%s %d %s" % (str(key), len(legit), str(sorted(legit))))
                 histo[len(legit)] += 1
                 dupsKilled += len(names) - len(legit)
             else:
@@ -171,7 +171,7 @@ for key, names in hits.items():
     if len(names) > 1 and BAD_COORDS not in names:
         legit = set(names)
         if len(legit) > 500:
-            if DEBUG: sys.stderr.write("skipping a cluster (%s) because it has too many hits\n" % key)
+            if DEBUG: sys.stderr.write("skipping a cluster (%s) because it has too many hits\n" % str(key))
             continue
         for index1, name1 in enumerate(names):
             for index2 in range(index1+1, len(names)):
@@ -179,7 +179,7 @@ for key, names in hits.items():
                 if dist < MIN_DIST:
                     legit.discard(names[index2])
         if False and len(legit) >= 4:
-            print("%s %d %s" % (key, len(legit), str(sorted(legit))))
+            print("%s %d %s" % (str(key), len(legit), str(sorted(legit))))
         histo[len(legit)] += 1
         dupsKilled += len(names) - len(legit)
     else:
