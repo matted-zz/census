@@ -1,4 +1,4 @@
-Census 0.9
+Census 0.9.1
 ==============
 
 Census is a tool to estimate the complexity of sequencing libraries
@@ -13,7 +13,7 @@ You can get Census by pulling it from git:
 
     git clone https://github.com/matted/census.git
 
-... or by downloading a zip: https://github.com/matted/census/archive/v0.9.zip.
+... or by downloading a zip: https://github.com/matted/census/archive/v0.9.1.zip.
 
 To run Census, several Python packages are required.  On a Ubuntu-like
 system, these commands will get the appropriate dependencies:
