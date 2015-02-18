@@ -1,7 +1,7 @@
 Census 0.9.1
 ==============
 
-[![Build Status](https://travis-ci.org/matted/census.svg?branch=master)](https://travis-ci.org/matted/census)
+[![Build Status](https://travis-ci.org/matted/census.svg?branch=master)](https://travis-ci.org/matted/census) [![Coverage Status](https://coveralls.io/repos/matted/census/badge.svg)](https://coveralls.io/r/matted/census)
 
 Census is a tool to estimate the complexity of sequencing libraries
 from read count samples.  See the wiki at
