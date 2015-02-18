@@ -35,6 +35,10 @@ install:
 
 script: python calculate_libsize.py example_duplicate_histo.txt
 
+before_script:
+  - pip install coveralls
+  - coverage run --source=census setup.py test
+
 sudo: false
 
 after_success:
