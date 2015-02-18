@@ -20,15 +20,17 @@ before_install:
   - chmod +x miniconda.sh
   - ./miniconda.sh -b
   - export PATH=/home/travis/miniconda/bin:/home/travis/miniconda3/bin:$PATH
-  - conda update --yes conda
-  - conda create --yes -n condaenv python=$TRAVIS_PYTHON_VERSION
-  - conda install --yes -n condaenv pip
-  - source activate condaenv
+  #  - if [[ $TRAVIS_PYTHON_VERSION != 3.2 ]]; then conda update --yes conda; fi
+  #- if [[ $TRAVIS_PYTHON_VERSION != 3.2 ]]; then conda create --yes -n condaenv python=$TRAVIS_PYTHON_VERSION; fi
+  #- if [[ $TRAVIS_PYTHON_VERSION != 3.2 ]]; then conda install --yes -n condaenv pip; fi		       
+  #- if [[ $TRAVIS_PYTHON_VERSION != 3.2 ]]; then source activate condaenv; fi
 
 # Install packages
 install:
   - if [[ $TRAVIS_PYTHON_VERSION == 2.6 ]]; then conda install --yes python=$TRAVIS_PYTHON_VERSION argparse; fi
-  - conda install --yes python=$TRAVIS_PYTHON_VERSION atlas numpy scipy # pysam
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then conda install --yes python=$TRAVIS_PYTHON_VERSION pysam; fi
+  - conda install --yes python=$TRAVIS_PYTHON_VERSION atlas numpy scipy 
+  # Removed pysam, since it isn't in the Conda repos for 3.*.  My setup.py will get it and build it from source.
   - python setup.py install
 
 script: python calculate_libsize.py example_duplicate_histo.txt
