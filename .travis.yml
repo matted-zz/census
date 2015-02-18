@@ -36,3 +36,6 @@ install:
 script: python calculate_libsize.py example_duplicate_histo.txt
 
 sudo: false
+
+after_success:
+  - coveralls
