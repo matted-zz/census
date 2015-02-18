@@ -22,7 +22,7 @@ before_install:
 
 # Install packages
 install:
-  - conda install --yes python=$TRAVIS_PYTHON_VERSION atlas numpy scipy pysam
+  - conda install --yes atlas numpy scipy pysam # python=$TRAVIS_PYTHON_VERSION 
   - python setup.py install
 
 script: python calculate_libsize.py example_duplicate_histo.txt
