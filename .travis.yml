@@ -3,8 +3,8 @@ language: python
 python:
   - "2.6"
   - "2.7"
-  - "3"
-  # - "3.3"
+  - "3.2"
+  - "3.3"
 
 notifications:
   on_success: change
@@ -15,18 +15,18 @@ notifications:
 
 # Setup anaconda
 before_install:
+  - if [[ $TRAVIS_PYTHON_VERSION == 3* ]]; then export TRAVIS_PYTHON_VERSION=3; fi
   - wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh
   - chmod +x miniconda.sh
   - ./miniconda.sh -b
   - export PATH=/home/travis/miniconda/bin:$PATH
   - conda update --yes conda
-  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then conda create --yes -n condaenv python=$TRAVIS_PYTHON_VERSION; fi
-  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then conda install --yes -n condaenv pip; fi
-  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then source activate condaenv; fi
+  - conda create --yes -n condaenv python=$TRAVIS_PYTHON_VERSION
+  - conda install --yes -n condaenv pip
+  - source activate condaenv
 
 # Install packages
 install:
-  - if [[ $TRAVIS_PYTHON_VERSION == 3* ]]; then conda install --yes python=3 pysam; fi
   - if [[ $TRAVIS_PYTHON_VERSION == 2.6 ]]; then conda install --yes python=$TRAVIS_PYTHON_VERSION argparse; fi
   - conda install --yes python=$TRAVIS_PYTHON_VERSION atlas numpy scipy pysam
   - python setup.py install
