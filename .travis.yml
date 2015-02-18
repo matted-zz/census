@@ -15,8 +15,8 @@ notifications:
 
 # Setup anaconda
 before_install:
-  - if [[ $TRAVIS_PYTHON_VERSION == 3* ]]; then export TRAVIS_PYTHON_VERSION=3; fi
-  - wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then wget http://repo.continuum.io/miniconda/Miniconda-3.8.3-Linux-x86_64.sh -O miniconda.sh; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 3* ]]; then wget http://repo.continuum.io/miniconda/Miniconda3-3.8.3-Linux-x86_64.sh -O miniconda.sh; fi
   - chmod +x miniconda.sh
   - ./miniconda.sh -b
   - export PATH=/home/travis/miniconda/bin:$PATH
