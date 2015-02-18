@@ -2,17 +2,20 @@ FROM ipython/scipystack
 
 MAINTAINER Matt Edwards <matted@mit.edu>
 
-# Dependencies are handled through setup.py now.
-# RUN easy_install3 pysam
-# RUN easy_install pysam
-
 RUN mkdir /root/census
 WORKDIR /root/census
 RUN git clone https://github.com/matted/census.git .
 
-# Install for both Python 2 and 3 (it makes testing easier).
-RUN python2 setup.py install --quiet
-RUN python3 setup.py install --quiet
+RUN curl -o miniconda.sh http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh
+RUN chmod a+x miniconda.sh
+RUN ./miniconda.sh -b
+RUN /root/miniconda/bin/conda update --yes conda
+RUN /root/miniconda/bin/conda create --yes -n conda python=2.7
+RUN /root/miniconda/bin/conda install --yes python=2.7 atlas numpy scipy pysam
+
+ENV PATH /root/miniconda/bin/:$PATH
+
+RUN python setup.py install --quiet
 
 CMD echo "Please run bam_to_histo.py or calculate_libsize.py."
 
