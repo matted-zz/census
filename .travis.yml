@@ -4,3 +4,5 @@ install:
   - pip install .
 
 script: ./bam_to_histo.py -h
+
+sudo: false
